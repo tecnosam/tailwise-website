@@ -1,9 +1,8 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
 import type { Metadata } from "next";
 import { Footer } from "@/components/footer";
 import { ArrowUpRight } from "@/components/icons";
 import { Nav } from "@/components/nav";
+import { fetchRepoFile, getDocsRef } from "@/lib/docs-source";
 import { renderMarkdown } from "@/lib/markdown";
 import Link from "next/link";
 
@@ -12,13 +11,10 @@ export const metadata: Metadata = {
   description: "Every notable change to Tailwise, release by release.",
 };
 
-async function readChangelog() {
-  "use cache";
-  return readFile(path.join(process.cwd(), "src/content/CHANGELOG.md"), "utf8");
-}
-
 export default async function ChangelogPage() {
-  const { html } = await renderMarkdown(await readChangelog(), "CHANGELOG.md", "main");
+  // Read from the latest release's tag, like the docs.
+  const { ref } = await getDocsRef();
+  const { html } = await renderMarkdown(await fetchRepoFile(ref, "CHANGELOG.md"), "CHANGELOG.md", ref);
 
   return (
     <>

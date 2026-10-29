@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { highlight } from "@/lib/highlight";
 import { getHealth } from "@/lib/github";
+import { getVersion } from "@/lib/releases";
 import { site } from "@/lib/site";
 import { ArrowUpRight } from "./icons";
 import { Reveal, SectionLabel } from "./reveal";
@@ -21,7 +22,7 @@ const steps = [
 ];
 
 export async function Pilot() {
-  const [health, html] = await Promise.all([getHealth(), highlight(shadow, "yaml")]);
+  const [health, html, version] = await Promise.all([getHealth(), highlight(shadow, "yaml"), getVersion()]);
 
   const signals = [
     { k: "Licence", v: health.license ?? "Apache-2.0", href: site.links.license },
@@ -56,7 +57,7 @@ export async function Pilot() {
           </Reveal>
           <Reveal delay={0.08}>
             <p className="mt-6 max-w-md text-lg leading-relaxed text-ink-soft">
-              Tailwise is at v{site.version} with one maintainer. Run it beside what you have before you
+              Tailwise is at v{version} with one maintainer. Run it beside what you have before you
               let it decide what your team never sees.
             </p>
             <ol className="mt-8 space-y-5">

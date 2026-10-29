@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getVersion } from "@/lib/releases";
 import { site } from "@/lib/site";
 import { GitHubIcon } from "./icons";
 import { Logo } from "./logo";
@@ -69,7 +70,8 @@ export function CallToAction() {
   );
 }
 
-export function Footer() {
+export async function Footer() {
+  const version = await getVersion();
   return (
     <footer className="relative border-t border-line">
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-10 px-6 py-16 sm:grid-cols-3 md:grid-cols-[1.4fr_repeat(3,1fr)] md:gap-12">
@@ -117,7 +119,7 @@ export function Footer() {
       <div className="border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-6 font-mono text-[0.7rem] text-ink-faint">
           <span>
-            v{site.version} ·{" "}
+            v{version} ·{" "}
             <a href={site.links.license} target="_blank" rel="noreferrer" className="hover:text-ink">
               {site.license}
             </a>

@@ -9,15 +9,16 @@ for smooth scrolling, and Shiki for code.
 npm install
 npm run dev          # http://localhost:3000
 npm run build
-npm run sync-docs    # copy README.md and CHANGELOG.md from ../tailwise
 ```
 
 | Route | Source |
 | --- | --- |
 | `/` | `src/app/page.tsx`, sections in `src/components` |
-| `/docs` | `src/content/README.md`, rendered at build time |
-| `/changelog` | `src/content/CHANGELOG.md` |
+| `/docs`, `/docs/architecture` | The engine's README and `architecture/` at the latest release's tag |
+| `/changelog` | The engine's CHANGELOG.md at the latest release's tag |
+| `/download` | The engine's GitHub releases |
 
-Links, the version and the release date live in `src/lib/site.ts`; bump them with each
-release. Colours are tokens in `src/app/globals.css` (`--paper` and `--accent`, redefined
+Publishing a release on GitHub updates the site within the hour: downloads, docs, changelog
+and every version label. `version` and `released` in `src/lib/site.ts` are only used before
+the first release. Links live there too. Colours are tokens in `src/app/globals.css` (`--paper` and `--accent`, redefined
 under `.dark`).

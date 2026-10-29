@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "sync-docs": "sh scripts/sync-docs.sh"
+    "lint": "eslint"
   },
   "dependencies": {
     "hast-util-to-string": "^3.0.1",

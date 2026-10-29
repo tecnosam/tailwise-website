@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { multiple } from "@/lib/benchmark";
-import { site } from "@/lib/site";
+import { getVersion } from "@/lib/releases";
 import { ArrowIcon, ArrowUpRight } from "./icons";
 import { RecallChart } from "./recall-chart";
 
@@ -20,7 +20,8 @@ function Words({ text, at, step = 0.05 }: { text: string; at: number; step?: num
   ));
 }
 
-export function Hero() {
+export async function Hero() {
+  const version = await getVersion();
   return (
     <section className="relative isolate overflow-hidden">
       <div className="bloom pointer-events-none absolute top-[10%] right-[-25%] -z-10 size-[60rem] md:right-[-10%]" />
@@ -34,7 +35,7 @@ export function Hero() {
             className="enter group mb-8 flex w-fit items-center gap-2.5 rounded-full border border-line bg-paper/80 py-1 pr-3 pl-1 text-xs text-ink-soft transition-colors hover:border-line-strong"
           >
             <span className="rounded-full bg-accent px-2 py-0.5 font-mono text-[0.65rem] font-medium text-accent-ink">
-              v{site.version}
+              v{version}
             </span>
             Open source, Apache-2.0
             <ArrowIcon className="size-3 transition-transform group-hover:translate-x-0.5" />

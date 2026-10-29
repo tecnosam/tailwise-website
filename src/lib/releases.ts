@@ -63,17 +63,29 @@ function fromGitHub(r: GitHubRelease): Release {
 
 // Every published release, newest first; when there is none yet (or GitHub
 // cannot be reached), the current version's expected assets, unpublished.
+// The fallback is kept for a minute only, so a new release shows up on the
+// next request instead of after the hour a found list is kept for.
 export async function getReleases(): Promise<Release[]> {
   "use cache";
-  cacheLife("hours");
   try {
     const res = await fetch(`https://api.github.com/repos/${repoPath}/releases?per_page=20`, {
       headers: { Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" },
     });
     if (res.ok) {
       const list = ((await res.json()) as GitHubRelease[]).filter((r) => !r.draft).map(fromGitHub);
-      if (list.length) return list;
+      if (list.length) {
+        cacheLife("hours");
+        return list;
+      }
     }
   } catch {}
+  cacheLife("minutes");
   return [expected(site.version, site.released)];
+}
+
+// The latest stable release's version, shown on the site's version labels.
+// Before the first release, the version in site.ts.
+export async function getVersion() {
+  const releases = await getReleases();
+  return releases.find((r) => r.published && !r.prerelease)?.version ?? site.version;
 }
