@@ -20,5 +20,6 @@ export const site = {
     examples: `${repo}/tree/main/examples`,
     architecture: "/docs/architecture",
     schema: `${repo}/blob/main/tailwise.schema.yaml`,
+    author: "https://samuelabolo.dev",
   },
 } as const;

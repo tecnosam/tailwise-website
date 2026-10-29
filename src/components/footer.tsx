@@ -124,7 +124,12 @@ export async function Footer() {
               {site.license}
             </a>
           </span>
-          <span>Keep the traces worth reviewing.</span>
+          <span>
+            Built by{" "}
+            <a href={site.links.author} target="_blank" rel="noreferrer" className="text-ink-soft hover:text-accent">
+              Samuel Abolo
+            </a>
+          </span>
         </div>
       </div>
     </footer>
