@@ -9,11 +9,11 @@ type Mark = "yes" | "part" | "no";
 const columns = ["Scores every run", "Catches wrong answers", "Cheap at volume"];
 
 const rows: { name: string; how: string; marks: [Mark, Mark, Mark]; us?: boolean }[] = [
-  { name: "Random sampling", how: "misses 95% at a 5% rate", marks: ["no", "part", "yes"] },
+  { name: "Random sampling", how: "free, but misses 95% at a 5% rate", marks: ["no", "part", "yes"] },
   { name: "Tail sampling rules", how: "wrong answers raise no errors", marks: ["yes", "no", "yes"] },
   { name: "Evals on the sample", how: "only see what sampling kept", marks: ["no", "part", "part"] },
   { name: "LLM judge on every run", how: "slow and costly at volume", marks: ["yes", "yes", "no"] },
-  { name: "Tailwise", how: "one short call per run", marks: ["yes", "yes", "yes"], us: true },
+  { name: "Tailwise", how: "one short call per run, cents per 1,000", marks: ["yes", "yes", "yes"], us: true },
 ];
 
 const label: Record<Mark, string> = { yes: "Yes", part: "Partly", no: "No" };

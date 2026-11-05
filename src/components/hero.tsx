@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { multiple } from "@/lib/benchmark";
+import { count, getBenchmark, headline, multiples } from "@/lib/benchmark";
 import { getVersion } from "@/lib/releases";
 import { ArrowIcon, ArrowUpRight } from "./icons";
 import { RecallChart } from "./recall-chart";
@@ -21,7 +21,13 @@ function Words({ text, at, step = 0.05 }: { text: string; at: number; step?: num
 }
 
 export async function Hero() {
-  const version = await getVersion();
+  const [version, b] = await Promise.all([getVersion(), getBenchmark()]);
+  const shown = headline(b);
+  const firm = shown.filter((s) => !s.row.rough).map((s) => s.row);
+  const range = multiples(b);
+  const lo = (f: (r: (typeof firm)[number]) => number) => Math.min(...firm.map(f));
+  const hi = (f: (r: (typeof firm)[number]) => number) => Math.max(...firm.map(f));
+  const { scenario } = b;
   return (
     <section className="relative isolate overflow-hidden">
       <div className="bloom pointer-events-none absolute top-[10%] right-[-25%] -z-10 size-[60rem] md:right-[-10%]" />
@@ -44,16 +50,20 @@ export async function Hero() {
           <h1 className="font-display text-[clamp(2.6rem,5.2vw,4.5rem)] leading-[0.98] font-semibold tracking-[-0.055em] text-ink">
             <Words text="Find" at={0.08} />
             <span className="font-serif text-[1.06em] font-normal tracking-[-0.03em] text-accent italic">
-              <Words text={`${Math.floor(multiple)}× the failures`} at={0.14} />
+              <Words text={`${range.low}–${range.high}× the failures`} at={0.14} />
             </span>
             <br className="hidden lg:block" />
-            <Words text="in the same review budget." at={0.3} />
+            <Words text="for a few dollars of scoring." at={0.3} />
           </h1>
 
           <p style={delay(0.45)} className="enter mt-8 max-w-xl text-lg leading-relaxed text-ink-soft md:text-[1.2rem]">
-            Tailwise scores every agent trace and keeps the likely wrong answers for your team. On 456
-            held-out agent runs,{" "}
-            <span className="text-ink">it found 8.4 failures where random sampling found 1.1</span>.
+            Random review costs nothing and finds a failure every {scenario.random_reviews_per_failure} traces.
+            Tailwise scores every trace and puts the likely failures first. In our benchmark,{" "}
+            <span className="text-ink">
+              {scenario.reviews} reviews of {count(scenario.traces)} traces found {count(lo((r) => r.found))} to{" "}
+              {count(hi((r) => r.found))} failures instead of {count(scenario.random_found)}
+            </span>
+            , for ${lo((r) => r.jev_usd).toFixed(2)} to ${hi((r) => r.jev_usd).toFixed(2)} in model calls.
           </p>
 
           <div style={delay(0.55)} className="enter mt-10 flex flex-wrap items-center gap-3">
@@ -77,9 +87,12 @@ export async function Hero() {
           style={delay(0.35)}
           className="enter self-center rounded-3xl border border-line bg-paper-2/90 p-6 shadow-[0_40px_100px_-40px_rgb(0_0_0/0.35)] md:p-8"
         >
-          <RecallChart delay={0.6} />
+          <RecallChart scenario={scenario} shown={shown} delay={0.6} />
           <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5 text-xs text-ink-faint">
-            <span>456 held-out traces · 1 in 10 wrong · 20 resamples</span>
+            <span>
+              Per {count(scenario.traces)} traces · {Math.round(scenario.failure_rate * 100)}% failing · lines are 95%
+              intervals{shown.some((s) => s.row.rough) && " · † rough, few successful runs"}
+            </span>
             <Link href="/benchmark" className="flex items-center gap-1 text-ink-soft transition-colors hover:text-accent">
               How we measured <ArrowUpRight className="size-3" />
             </Link>

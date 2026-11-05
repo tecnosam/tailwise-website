@@ -8,8 +8,10 @@ import { Nav } from "@/components/nav";
 import { Pilot } from "@/components/pilot";
 import { Problem } from "@/components/problem";
 import { Quickstart } from "@/components/quickstart";
+import { getBenchmark, headline } from "@/lib/benchmark";
 
-export default function Home() {
+export default async function Home() {
+  const b = await getBenchmark();
   return (
     <>
       <Nav />
@@ -20,7 +22,7 @@ export default function Home() {
         <Flow />
         <Guarantees />
         <DataFlow />
-        <Cost />
+        <Cost scenario={b.scenario} shown={headline(b)} usdPerMillion={b.usd_per_million_input_tokens} />
         <Pilot />
         <CallToAction />
       </main>

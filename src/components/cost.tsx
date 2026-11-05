@@ -1,13 +1,15 @@
 "use client";
 
 import { animate, motion, useMotionValue, useTransform } from "motion/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import { cost, dollarsPerToken } from "@/lib/benchmark";
+import type { Benchmark, Shown } from "@/lib/benchmark";
+import { ArrowUpRight } from "./icons";
 import { Reveal, SectionLabel } from "./reveal";
 
-// Traces per day on a log scale, so the slider covers 1k to 10M evenly.
+// Traces per day on a log scale, so the slider covers 1k to 1M evenly.
 const MIN = Math.log10(1_000);
-const MAX = Math.log10(10_000_000);
+const MAX = Math.log10(1_000_000);
 
 const fmtCount = (n: number) =>
   n >= 1_000_000 ? `${+(n / 1_000_000).toFixed(1)}M` : n >= 1_000 ? `${Math.round(n / 1_000)}k` : `${n}`;
@@ -15,9 +17,11 @@ const fmtCount = (n: number) =>
 const fmtMoney = (d: number) =>
   d < 1 ? `$${d.toFixed(2)}` : d < 100 ? `$${d.toFixed(1)}` : `$${Math.round(d).toLocaleString("en-US")}`;
 
-function Money({ value, className }: { value: number; className?: string }) {
+const fmtWhole = (n: number) => Math.round(n).toLocaleString("en-US");
+
+function Animated({ value, format, className }: { value: number; format: (n: number) => string; className?: string }) {
   const mv = useMotionValue(value);
-  const text = useTransform(mv, fmtMoney);
+  const text = useTransform(mv, format);
   useEffect(() => {
     const c = animate(mv, value, { duration: 0.4, ease: [0.16, 1, 0.3, 1] });
     return () => c.stop();
@@ -25,97 +29,208 @@ function Money({ value, className }: { value: number; className?: string }) {
   return <motion.span className={className}>{text}</motion.span>;
 }
 
-export function Cost() {
-  const [exp, setExp] = useState(5); // 100k a day
-  const [tokens, setTokens] = useState(cost.tokensPerTrace);
-  const perDay = Math.round(10 ** exp / (exp >= 6 ? 100_000 : 1_000)) * (exp >= 6 ? 100_000 : 1_000);
-  const daily = perDay * tokens * dollarsPerToken;
-  const per1k = 1_000 * tokens * dollarsPerToken;
+function Slider({
+  label,
+  value,
+  shown,
+  min,
+  max,
+  step,
+  onChange,
+}: {
+  label: string;
+  value: number;
+  shown: string;
+  min: number;
+  max: number;
+  step: number;
+  onChange: (v: number) => void;
+}) {
+  return (
+    <label className="block">
+      <div className="flex items-baseline justify-between font-mono text-[0.72rem]">
+        <span className="text-ink-soft">{label}</span>
+        <span className="text-ink tabular-nums">{shown}</span>
+      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="range mt-3"
+        style={{ "--fill": `${((value - min) / (max - min)) * 100}%` } as React.CSSProperties}
+        aria-label={label}
+      />
+    </label>
+  );
+}
+
+export function Cost({
+  scenario,
+  shown,
+  usdPerMillion,
+}: {
+  scenario: Benchmark["scenario"];
+  shown: Shown[];
+  usdPerMillion: number;
+}) {
+  const [pick, setPick] = useState(0);
+  const [exp, setExp] = useState(4); // 10k a day
+  const [tokens, setTokens] = useState(Math.round(shown[0].row.input_tokens_per_run / 100) * 100);
+  const [minutes, setMinutes] = useState(5);
+  const row = shown[pick].row;
+
+  const choose = (i: number) => {
+    setPick(i);
+    setTokens(Math.round(shown[i].row.input_tokens_per_run / 100) * 100);
+  };
+
+  const step = exp >= 5 ? 10_000 : 1_000;
+  const perMonth = Math.round(10 ** exp / step) * step * 30;
+  const reviews = perMonth * scenario.review_budget;
+  const randomFound = reviews * scenario.failure_rate;
+  const found = reviews * row.precision;
+  const scoring = (perMonth * tokens * usdPerMillion) / 1_000_000;
+  const hours = (n: number) => (n * minutes) / 60;
+  // Hours random review would need to find as many failures as Tailwise.
+  const saved = hours(found / scenario.failure_rate) - hours(reviews);
+  const per1k = (1_000 * tokens * usdPerMillion) / 1_000_000;
+
+  const cells: [string, React.ReactNode, React.ReactNode][] = [
+    ["Model calls", "$0", <Animated key="c" value={scoring} format={fmtMoney} />],
+    ["Failures found", fmtWhole(randomFound), <Animated key="f" value={found} format={fmtWhole} />],
+    [
+      `Hours to find ${fmtWhole(found)}`,
+      <Animated key="r" value={hours(found / scenario.failure_rate)} format={fmtWhole} />,
+      <Animated key="t" value={hours(reviews)} format={fmtWhole} />,
+    ],
+  ];
 
   return (
     <section id="cost" className="relative mx-auto max-w-6xl px-6 py-24 md:py-36">
-      <SectionLabel>Cost</SectionLabel>
+      <SectionLabel>Cost against accuracy</SectionLabel>
       <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-12 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-16">
         <div>
           <Reveal>
             <h2 className="font-display text-4xl leading-[1.02] font-semibold tracking-[-0.045em] text-ink md:text-[3.4rem]">
-              About{" "}
-              <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">3¢ per 1,000</span> traces.
+              Pay{" "}
+              <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">cents per 1,000</span>{" "}
+              traces. Get back hours of review.
             </h2>
           </Reveal>
           <Reveal delay={0.08}>
             <p className="mt-6 max-w-md text-lg leading-relaxed text-ink-soft">
-              Tailwise is free and open source. You pay for the model calls. Jev scored {cost.traces} traces of
-              about {cost.tokensPerTrace} tokens for ${cost.dollars.toFixed(2)}, because a System One model
-              returns numbers instead of writing a verdict.
+              Random review is free to choose, but it finds failures only as often as they happen. Tailwise is free and
+              open source; you pay for one short model call per trace, about{" "}
+              {(per1k * 100).toFixed(0)}¢ per 1,000 traces of {tokens.toLocaleString("en-US")} tokens. In exchange,
+              the traces your team reads are the likely failures.
+            </p>
+            <p className="mt-4 max-w-md leading-relaxed text-ink-soft">
+              The numbers on the right come from the benchmark: the share of reviewed traces that failed when{" "}
+              {Math.round(scenario.failure_rate * 100)}% of traces fail and a team reviews{" "}
+              {Math.round(scenario.review_budget * 100)}%. Your agents will differ.
             </p>
             <div className="mt-8 rounded-2xl border border-dashed border-line-strong px-5 py-4 text-sm leading-relaxed text-ink-soft">
               <span className="font-medium text-ink">No spend cap yet.</span> Every scored trace is a billed call,
-              and only server.workers limits the rate. Size your budget with the calculator.
+              and only server.workers limits the rate. Heuristic rules that keep a trace skip the call.
             </div>
           </Reveal>
         </div>
 
         <Reveal delay={0.1} y={32}>
           <div className="rounded-3xl border border-line bg-paper p-6 shadow-[0_30px_80px_-40px_rgb(0_0_0/0.3)] md:p-8">
-            <label className="block">
-              <div className="flex items-baseline justify-between font-mono text-[0.72rem]">
-                <span className="text-ink-soft">Traces per day</span>
-                <span className="text-ink tabular-nums">{fmtCount(perDay)}</span>
-              </div>
-              <input
-                type="range"
+            <div className="font-mono text-[0.72rem] text-ink-soft">Agents like</div>
+            <div className="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label="Benchmark to project from">
+              {shown.map((s, i) => (
+                <button
+                  key={s.key}
+                  type="button"
+                  role="radio"
+                  aria-checked={pick === i}
+                  onClick={() => choose(i)}
+                  className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+                    pick === i
+                      ? "border-accent bg-accent-wash text-accent"
+                      : "border-line text-ink-soft hover:border-line-strong"
+                  }`}
+                >
+                  {s.label}
+                  {s.row.rough && "†"}
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-7 space-y-7">
+              <Slider
+                label="Traces per day"
+                value={exp}
+                shown={fmtCount(perMonth / 30)}
                 min={MIN}
                 max={MAX}
                 step={0.01}
-                value={exp}
-                onChange={(e) => setExp(Number(e.target.value))}
-                className="range mt-3"
-                style={{ "--fill": `${((exp - MIN) / (MAX - MIN)) * 100}%` } as React.CSSProperties}
-                aria-label="Traces per day"
+                onChange={setExp}
               />
-            </label>
-            <label className="mt-7 block">
-              <div className="flex items-baseline justify-between font-mono text-[0.72rem]">
-                <span className="text-ink-soft">Tokens per trace</span>
-                <span className="text-ink tabular-nums">{tokens.toLocaleString("en-US")}</span>
-              </div>
-              <input
-                type="range"
-                min={200}
-                max={8_000}
-                step={20}
+              <Slider
+                label="Tokens per trace"
                 value={tokens}
-                onChange={(e) => setTokens(Number(e.target.value))}
-                className="range mt-3"
-                style={{ "--fill": `${((tokens - 200) / 7_800) * 100}%` } as React.CSSProperties}
-                aria-label="Tokens per trace"
+                shown={tokens.toLocaleString("en-US")}
+                min={500}
+                max={20_000}
+                step={100}
+                onChange={setTokens}
               />
-            </label>
-
-            <div className="mt-8 grid grid-cols-3 gap-4 border-t border-line pt-7">
-              <div>
-                <div className="font-mono text-[0.62rem] tracking-[0.14em] text-ink-faint uppercase">Per month</div>
-                <Money
-                  value={daily * 30}
-                  className="mt-1 block font-display text-3xl font-semibold tracking-[-0.04em] text-accent tabular-nums sm:text-4xl"
-                />
-              </div>
-              <div>
-                <div className="font-mono text-[0.62rem] tracking-[0.14em] text-ink-faint uppercase">Per day</div>
-                <Money value={daily} className="mt-1 block font-display text-3xl font-semibold tracking-[-0.04em] text-ink tabular-nums sm:text-4xl" />
-              </div>
-              <div>
-                <div className="font-mono text-[0.62rem] tracking-[0.14em] text-ink-faint uppercase">Per 1,000</div>
-                <span className="mt-1 block font-display text-3xl font-semibold tracking-[-0.04em] text-ink tabular-nums sm:text-4xl">
-                  {(per1k * 100).toFixed(1)}¢
-                </span>
-              </div>
+              <Slider
+                label="Minutes per review"
+                value={minutes}
+                shown={`${minutes}`}
+                min={1}
+                max={30}
+                step={1}
+                onChange={setMinutes}
+              />
             </div>
-            <p className="mt-6 text-xs leading-relaxed text-ink-faint">
-              From one billed Jev run: {cost.traces} requests, {cost.tokens.toLocaleString("en-US")} tokens, $
-              {cost.dollars.toFixed(2)} rounded to the cent, so treat results as ±20%. Your tokens per trace depend
-              on trace length and on how many questions your manifest asks. Check TypeSafe for current pricing.
+
+            <table className="mt-8 w-full border-t border-line text-left">
+              <caption className="sr-only">Per month, reviewing {Math.round(scenario.review_budget * 100)}% of traces</caption>
+              <thead>
+                <tr className="font-mono text-[0.62rem] tracking-[0.14em] text-ink-faint uppercase">
+                  <th className="pt-5 pb-2 font-normal">Per month</th>
+                  <th className="pt-5 pb-2 text-right font-normal">Random</th>
+                  <th className="pt-5 pb-2 text-right font-normal text-accent">Tailwise</th>
+                </tr>
+              </thead>
+              <tbody className="tabular-nums">
+                {cells.map(([k, a, b]) => (
+                  <tr key={k} className="border-t border-line">
+                    <th className="py-3 pr-2 text-sm font-normal text-ink-soft">{k}</th>
+                    <td className="py-3 text-right font-display text-xl font-semibold tracking-[-0.03em] text-ink-soft sm:text-2xl">
+                      {a}
+                    </td>
+                    <td className="py-3 text-right font-display text-xl font-semibold tracking-[-0.03em] text-accent sm:text-2xl">
+                      {b}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <p className="mt-5 text-sm leading-relaxed text-ink">
+              To find as many failures at random, your team would review for about{" "}
+              <Animated value={saved} format={fmtWhole} className="font-medium text-accent" /> more hours a month.
+              Tailwise costs <Animated value={scoring} format={fmtMoney} /> of model calls instead.
+            </p>
+            <p className="mt-4 text-xs leading-relaxed text-ink-faint">
+              {fmtWhole(reviews)} reviews ({Math.round(scenario.review_budget * 100)}% of traces), with{" "}
+              {Math.round(scenario.failure_rate * 100)}% of traces failing; Tailwise&apos;s share of failures among
+              them is the benchmark&apos;s ({Math.round(row.precision * 100)}%, 95% interval{" "}
+              {Math.round(row.precision_ci95[0] * 100)}–{Math.round(row.precision_ci95[1] * 100)}%).
+              {row.rough && " † Rough: few successful runs in this dataset."} Jev at ${usdPerMillion} per million
+              input tokens; output is not billed. Check TypeSafe for current pricing.{" "}
+              <Link href="/benchmark" className="inline-flex items-center gap-0.5 text-ink-soft hover:text-accent">
+                The benchmark <ArrowUpRight className="size-3" />
+              </Link>
             </p>
           </div>
         </Reveal>

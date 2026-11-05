@@ -1,39 +1,128 @@
-// The published benchmark: the Observer.ai prototype run of October 2026.
-// Every number on the site that claims accuracy or cost comes from here.
+import { cacheLife } from "next/cache";
+import snapshot from "./benchmark-snapshot.json";
+import { getDocsRef } from "./docs-source";
+import { repo } from "./site";
 
-// Failures found in the 5% of traces a team reviews, 1 in 10 traces wrong.
-export const recall = [
-  { name: "Perfect reviewer", found: 11, normalized: 100 },
-  { name: "Jev, the default model", found: 8.4, normalized: 74, us: true },
-  { name: "Six simple rules", found: 6.9, normalized: 59 },
-  { name: "Random sampling", found: 1.1, normalized: 0 },
-] as const;
+// The published benchmark: bench/published/benchmark.json in the engine's
+// repo, written by `bench publish`. Every number on the site that claims
+// accuracy or cost comes from here.
 
-// How often each method rates a wrong trace above a right one.
-export const auroc = [
-  { name: "Jev", value: 81, us: true },
-  { name: "Kev", value: 74 },
-  { name: "Laya", value: 72 },
-  { name: "Six simple rules", value: 70 },
-  { name: "Coin flip", value: 50 },
-] as const;
+export type Dataset = "tau" | "swe" | "trail";
 
-export const multiple = Math.round((8.4 / 1.1) * 10) / 10; // 7.6
-
-export const dataset = {
-  questions: "HotpotQA: public questions that each need two Wikipedia facts, with known answers",
-  agent: "A ReAct agent (think, search, read, repeat) on Google ADK, with some runs given planted failures",
-  runs: "4,499 runs from 3,000 questions, each labelled right or wrong against the known answer",
-  heldOut: "456 held-out test traces, resampled 20 times so 1 in 10 is wrong",
-  question: "Jev scored on its answer_wrong question alone",
+export type Row = {
+  dataset: Dataset;
+  // "all" runs, or the "detectable" ones: those whose label the trace can show.
+  slice: "all" | "detectable";
+  // "builtin" questions, or a manifest's ("tau-actions": the action checks).
+  setup: string;
+  rules: boolean;
+  runs: number;
+  failed: number;
+  // Few successful runs behind the figure: shown, marked as rough.
+  rough: boolean;
+  precision: number;
+  precision_ci95: number[];
+  found: number;
+  found_ci95: number[];
+  multiple: number;
+  reviews_per_failure: number;
+  random_reviews_for_same: number;
+  jev_usd: number;
+  jev_usd_per_extra_failure: number | null;
+  input_tokens_per_run: number;
+  roc_auc: number | null;
+  vs_baseline: { against: string; gain: number; ci95: number[] } | null;
+  run: string;
 };
 
-// Jev usage on 13 Oct 2026: 901 requests, 694,807 input and 45,050 output
-// tokens, $0.03 billed (rounded to the cent).
-export const cost = {
-  traces: 901,
-  tokens: 694_807 + 45_050,
-  dollars: 0.03,
-  tokensPerTrace: 820,
+export type Benchmark = {
+  schema: number;
+  date: string;
+  jev_model: string;
+  source: string;
+  usd_per_million_input_tokens: number;
+  // The deployment every row describes.
+  scenario: {
+    traces: number;
+    failure_rate: number;
+    review_budget: number;
+    reviews: number;
+    random_found: number;
+    random_reviews_per_failure: number;
+  };
+  datasets: Record<Dataset, { name: string; agent: string }>;
+  results: Row[];
 };
-export const dollarsPerToken = cost.dollars / cost.tokens;
+
+const file = "bench/published/benchmark.json";
+
+// The file at a ref, or undefined. A miss is kept for a minute only, so a
+// release that adds the file shows up on the next request.
+async function fetchPublished(ref: string): Promise<Benchmark | undefined> {
+  "use cache";
+  try {
+    const res = await fetch(`${repo.replace("https://github.com/", "https://raw.githubusercontent.com/")}/${ref}/${file}`);
+    if (res.ok) {
+      const b = (await res.json()) as Benchmark;
+      if (b.schema === 1 && b.results?.length) {
+        cacheLife("hours");
+        return b;
+      }
+    }
+  } catch {}
+  cacheLife("minutes");
+  return undefined;
+}
+
+// The figures at the latest release's tag, so they describe the binary on the
+// download page. Before a release carries the file, or when GitHub cannot be
+// reached, the snapshot bundled with the site.
+export async function getBenchmark(): Promise<Benchmark> {
+  const { ref } = await getDocsRef();
+  return (await fetchPublished(ref)) ?? (snapshot as Benchmark);
+}
+
+export function find(b: Benchmark, dataset: Dataset, slice: Row["slice"], setup = "builtin", rules = false) {
+  return b.results.find((r) => r.dataset === dataset && r.slice === slice && r.setup === setup && r.rules === rules);
+}
+
+export type Shown = { key: string; label: string; detail: string; row: Row };
+
+// The rows the site leads with: the built-in questions on each dataset, and
+// τ-bench's action checks on the runs a trace can judge.
+export function headline(b: Benchmark): Shown[] {
+  const shown = [
+    pick(b, "tau", "all", "builtin", "τ-bench", "Customer-service agents, built-in checks"),
+    pick(b, "tau", "detectable", "tau-actions", "τ-bench, action checks", "Runs whose outcome the trace shows"),
+    pick(b, "swe", "all", "builtin", "SWE-agent", "Coding agents, built-in checks"),
+    pick(b, "trail", "all", "builtin", "TRAIL", "Research and coding agents, built-in checks"),
+  ];
+  return shown.filter((s): s is Shown => Boolean(s));
+}
+
+function pick(b: Benchmark, ds: Dataset, slice: Row["slice"], setup: string, label: string, detail: string) {
+  const row = find(b, ds, slice, setup);
+  return row && { key: `${ds}-${slice}-${setup}`, label, detail, row };
+}
+
+// The range of "N× the failures" over the firm (not rough) headline rows.
+export function multiples(b: Benchmark) {
+  const firm = headline(b)
+    .filter((s) => !s.row.rough)
+    .map((s) => s.row.multiple);
+  return { low: Math.floor(Math.min(...firm)), high: Math.round(Math.max(...firm)) };
+}
+
+// The range of Jev cost per scenario (10,000 traces) over the headline rows.
+export function costs(b: Benchmark) {
+  const usd = headline(b).map((s) => s.row.jev_usd);
+  return { low: Math.min(...usd), high: Math.max(...usd) };
+}
+
+export const usd = (d: number) => (d < 0.1 ? `${(d * 100).toFixed(1)}¢` : `$${d.toFixed(2)}`);
+export const count = (n: number) => Math.round(n).toLocaleString("en-US");
+export const pct = (v: number) => `${Math.round(v * 100)}%`;
+
+export function month(date: string) {
+  return new Date(`${date}T00:00:00Z`).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
+}
