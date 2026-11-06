@@ -123,7 +123,7 @@ export function DownloadPicker({ release }: { release: Release }) {
       </div>
 
       <div className="relative mt-8 min-h-[8.5rem] md:mt-10 md:min-h-[11.5rem]">
-        <div className="font-mono text-[0.68rem] tracking-[0.2em] text-ink-faint uppercase">
+        <div className="text-[0.68rem] tracking-[0.2em] text-ink-faint uppercase">
           {detected ? "Detected for this machine" : "Choose a platform"}
         </div>
         <AnimatePresence mode="wait" initial={false}>
@@ -134,9 +134,9 @@ export function DownloadPicker({ release }: { release: Release }) {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h2 className="mt-3 font-display text-4xl leading-none font-semibold tracking-[-0.045em] text-ink md:text-5xl">
+            <h2 className="mt-3 font-display text-4xl leading-none font-semibold tracking-[-0.03em] text-ink md:text-5xl">
               {platform.label}{" "}
-              <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">{archLabel}</span>
+              {archLabel}
             </h2>
             <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[0.78rem] text-ink-soft">
               <span className="text-ink">{asset?.name}</span>

@@ -60,8 +60,7 @@
   --color-accent-ink: var(--accent-ink);
   --color-good: var(--good);
 
-  --font-display: var(--font-bricolage);
-  --font-serif: var(--font-instrument-serif);
+  --font-display: var(--font-instrument-sans);
   --font-sans: var(--font-instrument-sans);
   --font-mono: var(--font-jetbrains);
 

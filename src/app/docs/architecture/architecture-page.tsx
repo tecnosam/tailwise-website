@@ -18,7 +18,7 @@ export async function ArchitecturePage({ doc }: { doc: ArchitectureDoc }) {
       title={
         <>
           {words.join(" ")}{" "}
-          <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">{last}</span>
+          {last}
         </>
       }
       links={[

@@ -95,11 +95,11 @@ function MobileMenu({ version, onClose }: { version: string; onClose: () => void
                     onClick={onClose}
                     className="group flex items-baseline gap-4 py-3.5"
                   >
-                    <span className="w-6 font-mono text-[0.65rem] text-accent">0{i + 1}</span>
+                    <span className="w-6 text-[0.7rem] tabular-nums text-accent">0{i + 1}</span>
                     <span
-                      className={`text-[2.35rem] leading-none tracking-[-0.045em] transition-colors ${
+                      className={`text-[2.35rem] leading-none tracking-[-0.03em] transition-colors ${
                         on
-                          ? "font-serif font-normal tracking-[-0.02em] text-accent italic"
+                          ? "font-display font-semibold text-accent"
                           : "font-display font-semibold text-ink group-active:text-accent"
                       }`}
                     >
@@ -138,7 +138,7 @@ function MobileMenu({ version, onClose }: { version: string; onClose: () => void
             <GitHubIcon />
           </a>
         </div>
-        <div className="mt-5 flex items-center justify-between font-mono text-[0.68rem] text-ink-faint">
+        <div className="mt-5 flex items-center justify-between text-xs text-ink-faint">
           <span>v{version} · {site.license}</span>
           <a href={site.links.issues} target="_blank" rel="noreferrer" className="flex items-center gap-1">
             Issues <ArrowUpRight className="size-3" />

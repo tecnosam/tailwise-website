@@ -47,9 +47,9 @@ export async function Quickstart() {
         <div>
           <SectionLabel>Quickstart</SectionLabel>
           <Reveal>
-            <h2 className="mt-6 font-display text-4xl leading-[1.02] font-semibold tracking-[-0.045em] text-ink md:text-[3.4rem]">
+            <h2 className="mt-6 font-display text-4xl leading-[1.02] font-semibold tracking-[-0.03em] text-ink md:text-[3.4rem]">
               Three commands to your{" "}
-              <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">first decisions</span>.
+              first decisions.
             </h2>
           </Reveal>
           <Reveal delay={0.1}>

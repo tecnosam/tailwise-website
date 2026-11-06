@@ -21,12 +21,12 @@ export default async function ChangelogPage() {
       <Nav />
       <div className="mx-auto max-w-3xl px-5 pt-28 pb-24 sm:px-6 md:pt-36">
         <div className="enter">
-          <div className="font-mono text-[0.7rem] tracking-[0.2em] text-ink-faint uppercase">
+          <div className="text-[0.7rem] tracking-[0.2em] text-ink-faint uppercase">
             <span className="text-accent">Releases</span> · Changelog
           </div>
-          <h1 className="mt-5 font-display text-[2.6rem] leading-[0.95] sm:text-5xl font-semibold tracking-[-0.05em] text-ink md:text-7xl">
+          <h1 className="mt-5 font-display text-[2.6rem] leading-[0.95] sm:text-5xl font-semibold tracking-[-0.03em] text-ink md:text-7xl">
             What&apos;s{" "}
-            <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">new</span>
+            new
           </h1>
           <Link
             href="/download"

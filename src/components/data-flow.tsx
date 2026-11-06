@@ -35,9 +35,9 @@ export function DataFlow() {
       <SectionLabel>Data and security</SectionLabel>
       <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-16">
         <Reveal>
-          <h2 className="font-display text-4xl leading-[1.02] font-semibold tracking-[-0.045em] text-ink md:text-[3.4rem]">
+          <h2 className="font-display text-4xl leading-[1.02] font-semibold tracking-[-0.03em] text-ink md:text-[3.4rem]">
             Where your{" "}
-            <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">traces go</span>.
+            traces go.
           </h2>
         </Reveal>
         <Reveal delay={0.08}>
@@ -56,7 +56,7 @@ export function DataFlow() {
               key={l.to}
               className={`relative rounded-2xl border p-6 ${l.loud ? "border-accent/40 bg-accent-wash" : "border-line bg-paper-2/60"}`}
             >
-              <div className="flex items-center justify-between font-mono text-[0.65rem] tracking-[0.14em] uppercase">
+              <div className="flex items-center justify-between text-[0.65rem] tracking-[0.14em] uppercase">
                 <span className={l.loud ? "text-accent" : "text-ink-faint"}>Leaves → {i + 1}</span>
                 <span className="text-ink-faint normal-case tracking-normal">{l.when}</span>
               </div>

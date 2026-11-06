@@ -56,7 +56,7 @@ export function Comparison() {
         <div className="mt-8 hidden overflow-hidden rounded-2xl border border-line md:block">
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-line bg-paper-2/60 font-mono text-[0.68rem] tracking-[0.12em] text-ink-faint uppercase">
+              <tr className="border-b border-line bg-paper-2/60 text-[0.68rem] tracking-[0.12em] text-ink-faint uppercase">
                 <th className="px-6 py-3.5 font-normal">Approach</th>
                 {columns.map((c) => (
                   <th key={c} className="w-40 px-4 py-3.5 text-center font-normal">

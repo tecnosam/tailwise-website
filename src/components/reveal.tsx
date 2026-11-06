@@ -25,7 +25,7 @@ export function Reveal({
 
 export function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-3 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-ink-faint">
+    <div className="flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.2em] text-ink-faint">
       <span className="h-px w-8 bg-accent" />
       <span>{children}</span>
     </div>

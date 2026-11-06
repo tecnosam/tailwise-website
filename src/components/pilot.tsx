@@ -50,9 +50,9 @@ export async function Pilot() {
       <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-16">
         <div>
           <Reveal>
-            <h2 className="font-display text-4xl leading-[1.02] font-semibold tracking-[-0.045em] text-ink md:text-[3.4rem]">
+            <h2 className="font-display text-4xl leading-[1.02] font-semibold tracking-[-0.03em] text-ink md:text-[3.4rem]">
               Start with a{" "}
-              <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">shadow pilot</span>.
+              shadow pilot.
             </h2>
           </Reveal>
           <Reveal delay={0.08}>
@@ -63,7 +63,7 @@ export async function Pilot() {
             <ol className="mt-8 space-y-5">
               {steps.map(([t, b], i) => (
                 <li key={t} className="flex gap-4">
-                  <span className="font-serif text-2xl leading-none text-accent italic">{i + 1}</span>
+                  {i + 1}
                   <div>
                     <div className="font-medium text-ink">{t}</div>
                     <p className="mt-1 text-sm leading-relaxed text-ink-soft">{b}</p>
@@ -93,7 +93,7 @@ export async function Pilot() {
                   {...(s.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}
                   className="group -mt-px -ml-px border-t border-l border-line px-4 py-3.5 transition-colors hover:bg-paper-2"
                 >
-                  <div className="font-mono text-[0.62rem] tracking-[0.14em] text-ink-faint uppercase">{s.k}</div>
+                  <div className="text-[0.62rem] tracking-[0.14em] text-ink-faint uppercase">{s.k}</div>
                   <div className="mt-1 flex items-center gap-1.5 text-sm text-ink">
                     {"good" in s && <span className={`size-1.5 rounded-full ${s.good ? "bg-good" : "bg-accent"}`} />}
                     {s.v}

@@ -124,12 +124,12 @@ export default async function BenchmarkPage() {
       <Nav />
       <main className="mx-auto max-w-6xl px-5 pt-28 pb-24 sm:px-6 md:pt-36">
         <div className="enter max-w-3xl" style={{ "--d": "0.05s" } as React.CSSProperties}>
-          <div className="font-mono text-[0.7rem] tracking-[0.2em] text-ink-faint uppercase">
+          <div className="text-[0.7rem] tracking-[0.2em] text-ink-faint uppercase">
             <span className="text-accent">{month(b.date)}</span> · Benchmark
           </div>
-          <h1 className="mt-5 font-display text-[2.6rem] leading-[0.95] font-semibold tracking-[-0.05em] text-ink sm:text-5xl md:text-7xl">
+          <h1 className="mt-5 font-display text-[2.6rem] leading-[0.95] font-semibold tracking-[-0.03em] text-ink sm:text-5xl md:text-7xl">
             What it costs to stop{" "}
-            <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">reviewing at random</span>.
+            reviewing at random.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
             Take {count(scenario.traces)} agent traces, {failing} of them failures, and a team that reviews{" "}
@@ -165,7 +165,7 @@ export default async function BenchmarkPage() {
                     {s.row.rough && <span className="text-ink-faint">†</span>}
                     <span className="block text-xs text-ink-faint">{s.detail}</span>
                   </span>
-                  <span className="shrink-0 font-display text-3xl font-semibold tracking-[-0.04em] text-accent tabular-nums">
+                  <span className="shrink-0 font-display text-3xl font-semibold tracking-[-0.03em] text-accent tabular-nums">
                     {s.row.reviews_per_failure.toFixed(1)}
                   </span>
                 </li>
@@ -177,7 +177,7 @@ export default async function BenchmarkPage() {
         <section className="mt-24">
           <SectionLabel>Cost against accuracy</SectionLabel>
           <Reveal>
-            <h2 className="mt-6 max-w-3xl font-display text-3xl leading-[1.05] font-semibold tracking-[-0.04em] text-ink md:text-4xl">
+            <h2 className="mt-6 max-w-3xl font-display text-3xl leading-[1.05] font-semibold tracking-[-0.03em] text-ink md:text-4xl">
               Per {count(scenario.traces)} traces, {failing} failing, {count(scenario.reviews)} reviewed
             </h2>
             <p className="mt-4 max-w-3xl leading-relaxed text-ink-soft">
@@ -191,7 +191,7 @@ export default async function BenchmarkPage() {
             <div className="mt-8 overflow-x-auto rounded-2xl border border-line" data-lenis-prevent-horizontal>
               <table className="w-full min-w-[46rem] text-left text-sm">
                 <thead>
-                  <tr className="border-b border-line bg-paper-2/60 font-mono text-[0.66rem] tracking-[0.1em] text-ink-faint uppercase">
+                  <tr className="border-b border-line bg-paper-2/60 text-[0.66rem] tracking-[0.1em] text-ink-faint uppercase">
                     <th className="px-5 py-3 font-normal">Dataset</th>
                     <th className="px-3 py-3 text-right font-normal">Model cost</th>
                     <th className="px-3 py-3 text-right font-normal">Failures found (95%)</th>
@@ -206,11 +206,11 @@ export default async function BenchmarkPage() {
                       <span className="font-medium text-ink">Random review</span>
                       <span className="block text-xs text-ink-faint">Any dataset</span>
                     </td>
-                    <td className="px-3 py-3.5 text-right font-mono">$0.00</td>
-                    <td className="px-3 py-3.5 text-right font-mono">{count(scenario.random_found)}</td>
-                    <td className="px-3 py-3.5 text-right font-mono">{scenario.random_reviews_per_failure}</td>
-                    <td className="px-3 py-3.5 text-right font-mono">{count(scenario.reviews)}</td>
-                    <td className="px-5 py-3.5 text-right font-mono">–</td>
+                    <td className="px-3 py-3.5 text-right">$0.00</td>
+                    <td className="px-3 py-3.5 text-right">{count(scenario.random_found)}</td>
+                    <td className="px-3 py-3.5 text-right">{scenario.random_reviews_per_failure}</td>
+                    <td className="px-3 py-3.5 text-right">{count(scenario.reviews)}</td>
+                    <td className="px-5 py-3.5 text-right">–</td>
                   </tr>
                   {table.map((r) => (
                     <tr key={`${r.dataset}-${r.slice}-${r.setup}`} className="border-b border-line last:border-b-0">
@@ -221,13 +221,13 @@ export default async function BenchmarkPage() {
                         </span>
                         <span className="block text-xs text-ink-faint">{setupName(r)}</span>
                       </td>
-                      <td className="px-3 py-3.5 text-right font-mono text-ink">{money(r.jev_usd)}</td>
-                      <td className="px-3 py-3.5 text-right font-mono text-accent">
+                      <td className="px-3 py-3.5 text-right text-ink">{money(r.jev_usd)}</td>
+                      <td className="px-3 py-3.5 text-right text-accent">
                         {count(r.found)} <span className="text-ink-faint">({range(r.found_ci95)})</span>
                       </td>
-                      <td className="px-3 py-3.5 text-right font-mono text-ink">{r.reviews_per_failure.toFixed(1)}</td>
-                      <td className="px-3 py-3.5 text-right font-mono text-ink">{count(r.random_reviews_for_same)}</td>
-                      <td className="px-5 py-3.5 text-right font-mono text-ink">
+                      <td className="px-3 py-3.5 text-right text-ink">{r.reviews_per_failure.toFixed(1)}</td>
+                      <td className="px-3 py-3.5 text-right text-ink">{count(r.random_reviews_for_same)}</td>
+                      <td className="px-5 py-3.5 text-right text-ink">
                         {r.jev_usd_per_extra_failure === null ? "no gain" : `$${r.jev_usd_per_extra_failure.toFixed(3)}`}
                       </td>
                     </tr>
@@ -277,7 +277,7 @@ export default async function BenchmarkPage() {
               <div className="mt-8 overflow-x-auto rounded-2xl border border-line" data-lenis-prevent-horizontal>
                 <table className="w-full min-w-[36rem] text-left text-sm">
                   <thead>
-                    <tr className="border-b border-line bg-paper-2/60 font-mono text-[0.66rem] tracking-[0.1em] text-ink-faint uppercase">
+                    <tr className="border-b border-line bg-paper-2/60 text-[0.66rem] tracking-[0.1em] text-ink-faint uppercase">
                       <th className="px-5 py-3 font-normal">Dataset</th>
                       <th className="px-3 py-3 text-right font-normal">Failures found: model → + rules</th>
                       <th className="px-5 py-3 text-right font-normal">Model cost: model → + rules</th>
@@ -293,10 +293,10 @@ export default async function BenchmarkPage() {
                           </span>
                           <span className="block text-xs text-ink-faint">{setupName(r)}</span>
                         </td>
-                        <td className="px-3 py-3.5 text-right font-mono text-ink">
+                        <td className="px-3 py-3.5 text-right text-ink">
                           {count(before.found)} → {count(r.found)}
                         </td>
-                        <td className="px-5 py-3.5 text-right font-mono text-ink">
+                        <td className="px-5 py-3.5 text-right text-ink">
                           {money(before.jev_usd)} → {money(r.jev_usd)}
                         </td>
                       </tr>
@@ -321,7 +321,7 @@ export default async function BenchmarkPage() {
                 return (
                   r && (
                     <div key={ds} className="border-t border-line pt-4">
-                      <dt className="font-mono text-[0.68rem] tracking-[0.14em] text-ink-faint uppercase">
+                      <dt className="text-[0.68rem] tracking-[0.14em] text-ink-faint uppercase">
                         {b.datasets[ds].name}
                       </dt>
                       <dd className="mt-1.5 leading-relaxed text-ink">
@@ -332,7 +332,7 @@ export default async function BenchmarkPage() {
                 );
               })}
               <div className="border-t border-line pt-4">
-                <dt className="font-mono text-[0.68rem] tracking-[0.14em] text-ink-faint uppercase">Method</dt>
+                <dt className="text-[0.68rem] tracking-[0.14em] text-ink-faint uppercase">Method</dt>
                 <dd className="mt-1.5 leading-relaxed text-ink">
                   {b.jev_model} on Tailwise&apos;s built-in checks (and τ-bench&apos;s action checks), traces ranked by
                   severity. Failed runs are dropped at random until {failing} fail, and whole tasks are resampled, 100

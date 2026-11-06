@@ -29,7 +29,7 @@ function Wire({ delay = 0, dashed = false, className = "" }: { delay?: number; d
 function Node({ title, children, className = "" }: { title: string; children: React.ReactNode; className?: string }) {
   return (
     <div className={`rounded-2xl border border-line bg-paper-2 p-4 ${className}`}>
-      <div className="font-mono text-[0.65rem] tracking-[0.16em] text-ink-faint uppercase">{title}</div>
+      <div className="text-[0.65rem] tracking-[0.16em] text-ink-faint uppercase">{title}</div>
       <div className="mt-2 text-sm leading-snug text-ink">{children}</div>
     </div>
   );
@@ -40,9 +40,9 @@ export function Flow() {
     <section id="how" className="relative mx-auto max-w-6xl px-6 py-24 md:py-36">
       <SectionLabel>How it works</SectionLabel>
       <Reveal>
-        <h2 className="mt-6 max-w-4xl font-display text-4xl leading-[1.02] font-semibold tracking-[-0.045em] text-ink md:text-[3.4rem]">
+        <h2 className="mt-6 max-w-4xl font-display text-4xl leading-[1.02] font-semibold tracking-[-0.03em] text-ink md:text-[3.4rem]">
           Spans in. Six checks.{" "}
-          <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">The failures out</span>.
+          The failures out.
         </h2>
       </Reveal>
 
@@ -61,13 +61,13 @@ export function Flow() {
             </div>
             <div className="grid grid-cols-1 gap-2 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.25fr)_minmax(0,0.8fr)]">
               <div className="rounded-xl border border-line bg-paper p-3">
-                <div className="font-mono text-[0.62rem] tracking-[0.14em] text-ink-faint uppercase">Queue</div>
+                <div className="text-[0.62rem] tracking-[0.14em] text-ink-faint uppercase">Queue</div>
                 <p className="mt-1.5 text-[0.8rem] leading-snug text-ink">
                   NATS JetStream stores the trace before Tailwise replies
                 </p>
               </div>
               <div className="rounded-xl border border-line bg-paper p-3">
-                <div className="font-mono text-[0.62rem] tracking-[0.14em] text-ink-faint uppercase">
+                <div className="text-[0.62rem] tracking-[0.14em] text-ink-faint uppercase">
                   Score · one model call
                 </div>
                 <ul className="mt-1.5 grid grid-cols-1 gap-y-0.5 font-mono text-[0.66rem] text-ink-soft sm:grid-cols-2 md:grid-cols-1">
@@ -80,7 +80,7 @@ export function Flow() {
                 </ul>
               </div>
               <div className="rounded-xl border border-line bg-paper p-3">
-                <div className="font-mono text-[0.62rem] tracking-[0.14em] text-ink-faint uppercase">Decide</div>
+                <div className="text-[0.62rem] tracking-[0.14em] text-ink-faint uppercase">Decide</div>
                 <p className="mt-1.5 text-[0.8rem] leading-snug text-ink">
                   Any check over its threshold keeps the trace
                 </p>

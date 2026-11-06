@@ -41,9 +41,9 @@ export function Guarantees() {
     <section id="guarantees" className="relative mx-auto max-w-6xl px-6 py-24 md:py-36">
       <SectionLabel>Failure modes</SectionLabel>
       <Reveal>
-        <h2 className="mt-6 max-w-3xl font-display text-4xl leading-[1.02] font-semibold tracking-[-0.045em] text-ink md:text-[3.4rem]">
+        <h2 className="mt-6 max-w-3xl font-display text-4xl leading-[1.02] font-semibold tracking-[-0.03em] text-ink md:text-[3.4rem]">
           What happens{" "}
-          <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">when it breaks</span>.
+          when it breaks.
         </h2>
       </Reveal>
 
@@ -66,7 +66,7 @@ export function Guarantees() {
 
         <Reveal delay={0.12}>
           <div className="rounded-3xl border border-dashed border-line-strong bg-paper-2/60 p-6 md:p-7">
-            <div className="font-mono text-[0.68rem] tracking-[0.16em] text-ink-faint uppercase">Where it breaks</div>
+            <div className="text-[0.68rem] tracking-[0.16em] text-ink-faint uppercase">Where it breaks</div>
             <p className="mt-3 leading-relaxed text-ink">
               The README lists every open problem in this version. A few you should know before a pilot:
             </p>

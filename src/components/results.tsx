@@ -154,9 +154,9 @@ export function Results() {
     <section id="results" className="relative mx-auto max-w-6xl px-6 py-24 md:py-40">
       <SectionLabel>Results</SectionLabel>
       <Reveal>
-        <h2 className="mt-6 max-w-4xl font-display text-4xl leading-[1.02] font-semibold tracking-[-0.045em] text-ink md:text-[3.4rem]">
+        <h2 className="mt-6 max-w-4xl font-display text-4xl leading-[1.02] font-semibold tracking-[-0.03em] text-ink md:text-[3.4rem]">
           Review the same number of traces. Find{" "}
-          <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">7× the failures</span>.
+          7× the failures.
         </h2>
       </Reveal>
 
@@ -164,7 +164,7 @@ export function Results() {
         <ul className="mt-14 grid grid-cols-[minmax(0,1fr)] border-y border-line md:grid-cols-3 md:divide-x md:divide-line">
           {stats.map(([n, title, body], i) => (
             <li key={n} className={`py-7 md:px-8 md:first:pl-0 ${i ? "border-t border-line md:border-t-0" : ""}`}>
-              <div className="font-display text-6xl font-semibold tracking-[-0.05em] text-accent md:text-7xl">{n}</div>
+              <div className="font-display text-6xl font-semibold tracking-[-0.03em] text-accent md:text-7xl">{n}</div>
               <div className="mt-2 font-medium text-ink">{title}</div>
               <p className="mt-1 text-sm leading-relaxed text-ink-soft">{body}</p>
             </li>

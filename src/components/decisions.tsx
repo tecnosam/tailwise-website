@@ -88,9 +88,9 @@ export function Decisions() {
         <div className="md:pt-10">
           <SectionLabel>The decision</SectionLabel>
           <Reveal>
-            <h2 className="mt-6 font-display text-4xl leading-[1.02] font-semibold tracking-[-0.045em] text-ink md:text-[3.4rem]">
+            <h2 className="mt-6 font-display text-4xl leading-[1.02] font-semibold tracking-[-0.03em] text-ink md:text-[3.4rem]">
               Skip the triage. Every kept trace says{" "}
-              <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">why</span>.
+              why.
             </h2>
           </Reveal>
           <Reveal delay={0.1}>

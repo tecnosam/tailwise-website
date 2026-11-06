@@ -60,9 +60,9 @@ export function Playground() {
         <div>
           <SectionLabel>Playground</SectionLabel>
           <Reveal>
-            <h2 className="mt-6 font-display text-4xl leading-[1.02] font-semibold tracking-[-0.045em] text-ink md:text-[3.4rem]">
+            <h2 className="mt-6 font-display text-4xl leading-[1.02] font-semibold tracking-[-0.03em] text-ink md:text-[3.4rem]">
               Any failed check{" "}
-              <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">keeps</span> the trace.
+              keeps the trace.
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
@@ -92,15 +92,15 @@ export function Playground() {
             <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-4 border-b border-line pb-6">
               <div className="flex gap-6 sm:gap-8">
                 <div>
-                  <div className="font-mono text-[0.68rem] tracking-[0.2em] text-ink-faint uppercase">p_keep</div>
-                  <div className="font-display text-[2.6rem] font-semibold tracking-[-0.05em] text-ink tabular-nums sm:text-5xl md:text-6xl">
+                  <div className="text-[0.68rem] tracking-[0.2em] text-ink-faint uppercase">p_keep</div>
+                  <div className="font-display text-[2.6rem] font-semibold tracking-[-0.03em] text-ink tabular-nums sm:text-5xl md:text-6xl">
                     <AnimatedNumber value={pKeep} />
                   </div>
                 </div>
                 <div>
-                  <div className="font-mono text-[0.68rem] tracking-[0.2em] text-ink-faint uppercase">severity</div>
+                  <div className="text-[0.68rem] tracking-[0.2em] text-ink-faint uppercase">severity</div>
                   <div
-                    className={`font-display text-[2.6rem] font-semibold tracking-[-0.05em] tabular-nums transition-colors sm:text-5xl md:text-6xl ${
+                    className={`font-display text-[2.6rem] font-semibold tracking-[-0.03em] tabular-nums transition-colors sm:text-5xl md:text-6xl ${
                       keep ? "text-accent" : "text-ink-faint"
                     }`}
                   >
@@ -161,7 +161,7 @@ export function Playground() {
                 const flagged = flags.includes(q.key);
                 return (
                   <label key={q.key} className="block">
-                    <div className="flex items-baseline justify-between gap-3 font-mono text-[0.72rem]">
+                    <div className="flex items-baseline justify-between gap-3 text-[0.8rem]">
                       <span className={`truncate transition-colors ${flagged ? "text-accent" : "text-ink"}`}>
                         <span className="text-ink-faint">{i + 1} </span>
                         {q.key}{" "}
@@ -197,7 +197,7 @@ export function Playground() {
 
               <div className="grid gap-4 border-t border-line pt-5 sm:grid-cols-[1fr_auto] sm:items-end">
                 <label className="block">
-                  <div className="flex items-baseline justify-between font-mono text-[0.72rem]">
+                  <div className="flex items-baseline justify-between text-[0.8rem]">
                     <span className="text-ink">policy.keep_threshold</span>
                     <span className="text-ink-soft tabular-nums">{keepThreshold.toFixed(2)}</span>
                   </div>

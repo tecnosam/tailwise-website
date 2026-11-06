@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { count, getBenchmark, headline, multiples } from "@/lib/benchmark";
+import { count, getBenchmark, headline } from "@/lib/benchmark";
 import { getVersion } from "@/lib/releases";
 import { ArrowIcon, ArrowUpRight } from "./icons";
 import { RecallChart } from "./recall-chart";
@@ -24,7 +24,6 @@ export async function Hero() {
   const [version, b] = await Promise.all([getVersion(), getBenchmark()]);
   const shown = headline(b);
   const firm = shown.filter((s) => !s.row.rough).map((s) => s.row);
-  const range = multiples(b);
   const lo = (f: (r: (typeof firm)[number]) => number) => Math.min(...firm.map(f));
   const hi = (f: (r: (typeof firm)[number]) => number) => Math.max(...firm.map(f));
   const { scenario } = b;
@@ -40,30 +39,27 @@ export async function Hero() {
             style={delay(0.05)}
             className="enter group mb-8 flex w-fit items-center gap-2.5 rounded-full border border-line bg-paper/80 py-1 pr-3 pl-1 text-xs text-ink-soft transition-colors hover:border-line-strong"
           >
-            <span className="rounded-full bg-accent px-2 py-0.5 font-mono text-[0.65rem] font-medium text-accent-ink">
+            <span className="rounded-full bg-accent px-2 py-0.5 text-[0.7rem] font-medium text-accent-ink">
               v{version}
             </span>
             Open source, Apache-2.0
             <ArrowIcon className="size-3 transition-transform group-hover:translate-x-0.5" />
           </Link>
 
-          <h1 className="font-display text-[clamp(2.6rem,5.2vw,4.5rem)] leading-[0.98] font-semibold tracking-[-0.055em] text-ink">
-            <Words text="Find" at={0.08} />
-            <span className="font-serif text-[1.06em] font-normal tracking-[-0.03em] text-accent italic">
-              <Words text={`${range.low}–${range.high}× the failures`} at={0.14} />
-            </span>
-            <br className="hidden lg:block" />
-            <Words text="for a few dollars of scoring." at={0.3} />
+          <h1 className="font-display text-[clamp(2.6rem,5.2vw,4.5rem)] leading-[0.98] font-semibold tracking-[-0.03em] text-ink">
+            <Words text="Check every agent run for cents per thousand." at={0.08} />
           </h1>
 
           <p style={delay(0.45)} className="enter mt-8 max-w-xl text-lg leading-relaxed text-ink-soft md:text-[1.2rem]">
-            Random review costs nothing and finds a failure every {scenario.random_reviews_per_failure} traces.
-            Tailwise scores every trace and puts the likely failures first. In our benchmark,{" "}
+            Random review reads 1 run in {Math.round(1 / scenario.review_budget)} and never sees the rest. Tailwise
+            scores every run, about {Math.round((shown[0].row.jev_usd / scenario.traces) * 100_000)}¢ per 1,000 with
+            the built-in checks, and puts the likely failures at the top of your queue. In our benchmark,{" "}
             <span className="text-ink">
-              {scenario.reviews} reviews of {count(scenario.traces)} traces found {count(lo((r) => r.found))} to{" "}
-              {count(hi((r) => r.found))} failures instead of {count(scenario.random_found)}
+              your team finds a failure every {lo((r) => r.reviews_per_failure).toFixed(1)} to{" "}
+              {hi((r) => r.reviews_per_failure).toFixed(1)} reviews instead of every{" "}
+              {scenario.random_reviews_per_failure}
             </span>
-            , for ${lo((r) => r.jev_usd).toFixed(2)} to ${hi((r) => r.jev_usd).toFixed(2)} in model calls.
+            .
           </p>
 
           <div style={delay(0.55)} className="enter mt-10 flex flex-wrap items-center gap-3">

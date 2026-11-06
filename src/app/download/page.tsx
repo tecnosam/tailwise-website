@@ -106,12 +106,12 @@ export default async function DownloadPage() {
       <Nav />
       <main className="mx-auto max-w-6xl px-5 pt-28 pb-24 sm:px-6 md:pt-36">
         <div className="enter max-w-3xl" style={{ "--d": "0.05s" } as React.CSSProperties}>
-          <div className="font-mono text-[0.7rem] tracking-[0.2em] text-ink-faint uppercase">
+          <div className="text-[0.7rem] tracking-[0.2em] text-ink-faint uppercase">
             <span className="text-accent">v{latest.version}</span> · Download
           </div>
-          <h1 className="mt-5 font-display text-[2.6rem] leading-[0.95] sm:text-5xl font-semibold tracking-[-0.05em] text-ink md:text-7xl">
+          <h1 className="mt-5 font-display text-[2.6rem] leading-[0.95] sm:text-5xl font-semibold tracking-[-0.03em] text-ink md:text-7xl">
             Download{" "}
-            <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">Tailwise</span>
+            Tailwise
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
             Each release has one static binary per platform. The queues run inside the binary, so you
@@ -195,16 +195,16 @@ export default async function DownloadPage() {
             <div>
               <SectionLabel>Install</SectionLabel>
               <Reveal>
-                <h2 className="mt-6 font-display text-4xl leading-[1.02] font-semibold tracking-[-0.045em] text-ink">
+                <h2 className="mt-6 font-display text-4xl leading-[1.02] font-semibold tracking-[-0.03em] text-ink">
                   Install from the{" "}
-                  <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">terminal</span>.
+                  terminal.
                 </h2>
               </Reveal>
               <Reveal delay={0.08}>
                 <ol className="mt-8 space-y-5">
                   {firstRun.map(([title, body], i) => (
                     <li key={title} className="flex gap-4">
-                      <span className="font-serif text-2xl leading-none text-accent italic">{i + 1}</span>
+                      {i + 1}
                       <div>
                         <div className="font-medium text-ink">{title}</div>
                         <p className="mt-1 text-sm leading-relaxed text-ink-soft">{body}</p>
@@ -239,7 +239,7 @@ export default async function DownloadPage() {
                     rel="noreferrer"
                     className="group grid grid-cols-[auto_1fr_auto] items-center gap-5 py-5"
                   >
-                    <span className="font-display text-2xl font-semibold tracking-[-0.04em] text-ink transition-colors group-hover:text-accent">
+                    <span className="font-display text-2xl font-semibold tracking-[-0.03em] text-ink transition-colors group-hover:text-accent">
                       v{r.version}
                     </span>
                     <span className="flex flex-wrap items-center gap-2 font-mono text-[0.7rem] text-ink-faint">

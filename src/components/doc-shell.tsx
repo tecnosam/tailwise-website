@@ -24,8 +24,8 @@ export function DocShell({ eyebrow, title, links, toc, html, siblings, diagrams 
       <Nav />
       <div className="mx-auto max-w-7xl px-5 pt-28 pb-24 sm:px-6 md:pt-36">
         <div className="enter max-w-3xl">
-          <div className="font-mono text-[0.7rem] tracking-[0.2em] text-ink-faint uppercase">{eyebrow}</div>
-          <h1 className="mt-5 font-display text-[2.6rem] leading-[0.95] font-semibold tracking-[-0.05em] text-ink sm:text-5xl md:text-7xl">
+          <div className="text-[0.7rem] tracking-[0.2em] text-ink-faint uppercase">{eyebrow}</div>
+          <h1 className="mt-5 font-display text-[2.6rem] leading-[0.95] font-semibold tracking-[-0.03em] text-ink sm:text-5xl md:text-7xl">
             {title}
           </h1>
           <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
@@ -68,7 +68,7 @@ export function DocShell({ eyebrow, title, links, toc, html, siblings, diagrams 
         <details className="group mt-6 rounded-2xl border border-line bg-paper-2 lg:hidden">
           <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-sm text-ink [&::-webkit-details-marker]:hidden">
             On this page
-            <span className="font-mono text-ink-faint transition-transform duration-300 group-open:rotate-45">+</span>
+            <span className="text-ink-faint transition-transform duration-300 group-open:rotate-45">+</span>
           </summary>
           <ul className="max-h-[50svh] overflow-y-auto border-t border-line px-4 py-2 text-sm" data-lenis-prevent>
             {toc

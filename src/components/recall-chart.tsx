@@ -47,7 +47,7 @@ export function RecallChart({
 
   return (
     <figure>
-      <figcaption className="flex items-baseline justify-between gap-4 font-mono text-[0.68rem] tracking-[0.16em] text-ink-faint uppercase">
+      <figcaption className="flex items-baseline justify-between gap-4 text-[0.68rem] tracking-[0.16em] text-ink-faint uppercase">
         <span>Failures found in {scenario.reviews} reviews</span>
         <span className="tracking-[0.12em]">Model cost</span>
       </figcaption>
@@ -67,7 +67,7 @@ export function RecallChart({
                 {r.label}
                 {r.rough && <span className="text-ink-faint">†</span>}
               </span>
-              <span className="flex items-baseline gap-3 font-mono tabular-nums">
+              <span className="flex items-baseline gap-3 tabular-nums">
                 <span className="text-ink">{Math.round(r.found)}</span>
                 <span className={`w-12 text-right text-xs ${r.cost ? "text-ink-soft" : "text-ink-faint"}`}>
                   {money(r.cost)}
@@ -99,7 +99,7 @@ export function RecallChart({
               )}
             </div>
             {hover === i && (
-              <div className="pointer-events-none absolute -top-9 right-0 z-10 rounded-lg border border-line bg-paper px-3 py-1.5 font-mono text-[0.7rem] whitespace-nowrap text-ink shadow-lg">
+              <div className="pointer-events-none absolute -top-9 right-0 z-10 rounded-lg border border-line bg-paper px-3 py-1.5 text-xs whitespace-nowrap text-ink shadow-lg">
                 {Math.round(r.found)} found · {r.detail}
               </div>
             )}

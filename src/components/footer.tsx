@@ -45,9 +45,9 @@ export function CallToAction() {
       <SieveBackdrop className="absolute inset-0 -z-10 opacity-60 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_70%)]" />
       <Reveal className="mx-auto max-w-4xl text-center">
         <Logo className="mx-auto size-14 text-ink" />
-        <h2 className="mt-10 font-display text-[clamp(2.6rem,7vw,5.6rem)] text-balance leading-[0.95] font-semibold tracking-[-0.055em] text-ink">
+        <h2 className="mt-10 font-display text-[clamp(2.6rem,7vw,5.6rem)] text-balance leading-[0.95] font-semibold tracking-[-0.03em] text-ink">
           Find the wrong answers{" "}
-          <span className="font-serif font-normal tracking-[-0.03em] text-accent italic">before your users do</span>.
+          before your users do.
         </h2>
         <div className="mt-12 flex flex-wrap justify-center gap-3">
           <Link
@@ -78,7 +78,7 @@ export async function Footer() {
         <div className="col-span-2 sm:col-span-3 md:col-span-1">
           <div className="flex items-center gap-2 text-ink">
             <Logo className="size-6" />
-            <span className="font-display text-lg font-semibold tracking-[-0.04em]">tailwise</span>
+            <span className="font-display text-lg font-semibold tracking-[-0.03em]">tailwise</span>
           </div>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink-soft">
             An open-source inference engine for LLM agent traces. Written in Go, built on
@@ -87,7 +87,7 @@ export async function Footer() {
         </div>
         {columns.map((col) => (
           <div key={col.title}>
-            <h4 className="font-mono text-[0.68rem] tracking-[0.2em] text-ink-faint uppercase">{col.title}</h4>
+            <h4 className="text-[0.68rem] tracking-[0.2em] text-ink-faint uppercase">{col.title}</h4>
             <ul className="mt-4 space-y-2.5">
               {col.links.map((l) => {
                 const external = l.href.startsWith("http");
@@ -117,7 +117,7 @@ export async function Footer() {
         </div>
       </div>
       <div className="border-t border-line">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-6 font-mono text-[0.7rem] text-ink-faint">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-6 text-xs text-ink-faint">
           <span>
             v{version} ·{" "}
             <a href={site.links.license} target="_blank" rel="noreferrer" className="hover:text-ink">

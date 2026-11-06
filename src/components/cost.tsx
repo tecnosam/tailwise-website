@@ -48,7 +48,7 @@ function Slider({
 }) {
   return (
     <label className="block">
-      <div className="flex items-baseline justify-between font-mono text-[0.72rem]">
+      <div className="flex items-baseline justify-between text-[0.8rem]">
         <span className="text-ink-soft">{label}</span>
         <span className="text-ink tabular-nums">{shown}</span>
       </div>
@@ -114,9 +114,9 @@ export function Cost({
       <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-12 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-16">
         <div>
           <Reveal>
-            <h2 className="font-display text-4xl leading-[1.02] font-semibold tracking-[-0.045em] text-ink md:text-[3.4rem]">
+            <h2 className="font-display text-4xl leading-[1.02] font-semibold tracking-[-0.03em] text-ink md:text-[3.4rem]">
               Pay{" "}
-              <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">cents per 1,000</span>{" "}
+              cents per 1,000{" "}
               traces. Get back hours of review.
             </h2>
           </Reveal>
@@ -141,7 +141,7 @@ export function Cost({
 
         <Reveal delay={0.1} y={32}>
           <div className="rounded-3xl border border-line bg-paper p-6 shadow-[0_30px_80px_-40px_rgb(0_0_0/0.3)] md:p-8">
-            <div className="font-mono text-[0.72rem] text-ink-soft">Agents like</div>
+            <div className="text-[0.8rem] text-ink-soft">Agents like</div>
             <div className="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label="Benchmark to project from">
               {shown.map((s, i) => (
                 <button
@@ -195,7 +195,7 @@ export function Cost({
             <table className="mt-8 w-full border-t border-line text-left">
               <caption className="sr-only">Per month, reviewing {Math.round(scenario.review_budget * 100)}% of traces</caption>
               <thead>
-                <tr className="font-mono text-[0.62rem] tracking-[0.14em] text-ink-faint uppercase">
+                <tr className="text-[0.62rem] tracking-[0.14em] text-ink-faint uppercase">
                   <th className="pt-5 pb-2 font-normal">Per month</th>
                   <th className="pt-5 pb-2 text-right font-normal">Random</th>
                   <th className="pt-5 pb-2 text-right font-normal text-accent">Tailwise</th>

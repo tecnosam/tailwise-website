@@ -47,9 +47,9 @@ export function Features() {
     <section className="relative mx-auto max-w-6xl px-6 py-24 md:py-40">
       <SectionLabel>Features</SectionLabel>
       <Reveal>
-        <h2 className="mt-6 max-w-3xl font-display text-4xl leading-[1.02] font-semibold tracking-[-0.045em] text-ink md:text-[3.4rem]">
+        <h2 className="mt-6 max-w-3xl font-display text-4xl leading-[1.02] font-semibold tracking-[-0.03em] text-ink md:text-[3.4rem]">
           Built to run in{" "}
-          <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">production</span>.
+          production.
         </h2>
       </Reveal>
 

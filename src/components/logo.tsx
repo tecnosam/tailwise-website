@@ -14,7 +14,7 @@ export function Wordmark() {
   return (
     <span className="flex items-center gap-2 text-ink">
       <Logo className="size-6" />
-      <span className="font-display text-[1.15rem] font-semibold tracking-[-0.04em]">tailwise</span>
+      <span className="font-display text-[1.15rem] font-semibold tracking-[-0.03em]">tailwise</span>
     </span>
   );
 }

@@ -76,9 +76,9 @@ export async function Connect() {
         <div>
           <SectionLabel>Connect</SectionLabel>
           <Reveal>
-            <h2 className="mt-6 font-display text-4xl leading-[1.02] font-semibold tracking-[-0.045em] text-ink md:text-[3.4rem]">
+            <h2 className="mt-6 font-display text-4xl leading-[1.02] font-semibold tracking-[-0.03em] text-ink md:text-[3.4rem]">
               Point your exporter at{" "}
-              <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">Tailwise</span>.
+              Tailwise.
             </h2>
           </Reveal>
           <Reveal delay={0.1}>

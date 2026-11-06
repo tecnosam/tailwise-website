@@ -20,7 +20,7 @@ export default async function DocsPage() {
       title={
         <>
           The Tailwise{" "}
-          <span className="font-serif font-normal tracking-[-0.02em] text-accent italic">manual</span>
+          manual
         </>
       }
       links={[

@@ -65,9 +65,9 @@ export function Pipeline() {
         <div className="dot-grid pointer-events-none absolute inset-0 -z-10 opacity-60 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" />
         <div className="mx-auto w-full max-w-6xl px-5 sm:px-6">
           <SectionLabel>How it works</SectionLabel>
-          <h2 className="mt-5 max-w-2xl font-display text-[2rem] leading-[1.02] sm:mt-6 sm:text-4xl font-semibold tracking-[-0.045em] text-ink md:text-[3.4rem]">
+          <h2 className="mt-5 max-w-2xl font-display text-[2rem] leading-[1.02] sm:mt-6 sm:text-4xl font-semibold tracking-[-0.03em] text-ink md:text-[3.4rem]">
             Drops in beside your agent.{" "}
-            <span className="font-serif font-normal tracking-[-0.02em] text-ink-faint italic">Never in its way.</span>
+            Never in its way.
           </h2>
 
           {/* Track */}
@@ -97,7 +97,7 @@ export function Pipeline() {
                       )}
                     </span>
                     <span
-                      className={`mt-4 font-mono text-[0.62rem] tracking-[0.15em] uppercase transition-colors md:text-[0.7rem] ${
+                      className={`mt-4 text-[0.62rem] tracking-[0.15em] uppercase transition-colors md:text-[0.7rem] ${
                         on ? "text-ink" : "text-ink-faint"
                       }`}
                     >
@@ -121,8 +121,8 @@ export function Pipeline() {
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
               >
                 <div className="flex items-baseline gap-4">
-                  <span className="font-serif text-5xl text-accent italic sm:text-6xl md:text-8xl">{active + 1}</span>
-                  <h3 className="font-display text-[1.75rem] font-semibold sm:text-3xl tracking-[-0.04em] text-ink md:text-5xl">
+                  <span className="text-5xl font-semibold tracking-[-0.03em] text-accent tabular-nums sm:text-6xl md:text-8xl">{active + 1}</span>
+                  <h3 className="font-display text-[1.75rem] font-semibold sm:text-3xl tracking-[-0.03em] text-ink md:text-5xl">
                     {step.title}
                   </h3>
                 </div>

@@ -108,9 +108,9 @@ export function Problem() {
         <div>
           <SectionLabel>The problem</SectionLabel>
           <Reveal>
-            <h2 className="mt-6 font-display text-4xl leading-[1.02] font-semibold tracking-[-0.045em] text-ink md:text-[3.4rem]">
+            <h2 className="mt-6 font-display text-4xl leading-[1.02] font-semibold tracking-[-0.03em] text-ink md:text-[3.4rem]">
               Your dashboards say{" "}
-              <span className="font-serif font-normal tracking-[-0.02em] text-good italic">healthy</span>. The
+              healthy. The
               answer is wrong.
             </h2>
           </Reveal>
@@ -120,7 +120,7 @@ export function Problem() {
               it. Your users do.
             </p>
             <div className="mt-10 flex items-end gap-5">
-              <div className="font-display text-[clamp(5rem,14vw,8.5rem)] leading-[0.8] font-semibold tracking-[-0.06em] text-accent tabular-nums">
+              <div className="font-display text-[clamp(5rem,14vw,8.5rem)] leading-[0.8] font-semibold tracking-[-0.03em] text-accent tabular-nums">
                 <CountUp to={95} />%
               </div>
               <p className="max-w-[14rem] pb-1.5 leading-snug text-ink-soft">
